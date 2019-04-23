@@ -53,6 +53,7 @@
     <Compile Include="Execution\Snapshot.cs" />
     <Compile Include="Execution\WorkFactory.cs" />
     <Compile Include="Processors\PLinq.cs" />
+    <Compile Include="Processors\Threads.cs" />
     <Compile Include="Processors\ThredPoolEnque.cs" />
     <Compile Include="Processors\WaitAllTaskRun.cs" />
     <Compile Include="Processors\WaitAllTasks.cs" />
