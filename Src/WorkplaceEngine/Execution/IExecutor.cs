@@ -33,7 +33,7 @@ namespace WorkplaceEngine.Execution
         /// <summary>
         /// Gets all work items current work state
         /// </summary>
-        /// <returns>Array of work states</returns>
-        WorkProgress[] GetSnapshot();
+        /// <returns>Snapshot instance</returns>
+        Snapshot GetSnapshot();
     }
 }

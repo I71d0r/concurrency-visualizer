@@ -45,10 +45,12 @@
     <Compile Include="Contract\ISyncWorkItem.cs" />
     <Compile Include="Contract\IWorkItemProcessor.cs" />
     <Compile Include="Contract\IWorkItem.cs" />
+    <Compile Include="Contract\ThreadInfo.cs" />
     <Compile Include="Contract\WorkProgress.cs" />
     <Compile Include="Contract\WorkState.cs" />
     <Compile Include="Execution\Executor.cs" />
     <Compile Include="Execution\IExecutor.cs" />
+    <Compile Include="Execution\Snapshot.cs" />
     <Compile Include="Execution\WorkFactory.cs" />
     <Compile Include="Processors\PLinq.cs" />
     <Compile Include="Processors\ThredPoolEnque.cs" />

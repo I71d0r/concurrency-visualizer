@@ -17,7 +17,7 @@ namespace WorkplaceEngine.WorkItems
                 if (cancel.IsCancellationRequested)
                     break;
 
-                await Task.Delay(10);
+                await Task.Delay(100);
 
                 Progress(1);
             }

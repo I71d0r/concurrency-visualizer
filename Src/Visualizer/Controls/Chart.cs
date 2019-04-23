@@ -67,7 +67,7 @@ namespace Visualizer.Controls
             var current = values.ToArray();
 
             var max = current.Max();
-            var hMul = (1f - topMarginPercent) * ClientSize.Height / max;
+            var hMul = max == 0 ? 0 : (1f - topMarginPercent) * ClientSize.Height / max;
             var xAdd = 1f * Width / (values.Count - 1);
 
             var invert = ClientSize.Height;

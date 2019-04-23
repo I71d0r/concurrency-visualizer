@@ -4,13 +4,14 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using WorkplaceEngine.Contract;
+using WorkplaceEngine.Execution;
 
 namespace Visualizer.Controls
 {
     public partial class WorkProgressControl : UserControl
     {
         readonly Color[] colors;
-        WorkProgress[] snapshot;
+        Snapshot snapshot;
 
         const int threadSpacing = 80;
 
@@ -36,7 +37,7 @@ namespace Visualizer.Controls
         /// Updates the displayed data with a new set
         /// </summary>
         /// <param name="snapshot">Work state snapshot</param>
-        public void SetData(WorkProgress[] snapshot)
+        public void SetData(Snapshot snapshot)
         {
             this.snapshot = snapshot;
             Invalidate();
@@ -51,25 +52,21 @@ namespace Visualizer.Controls
             if (snapshot == null)
                 return;
 
-            var theadColors = GetThreadColors(snapshot);
+            var theadColors = GetThreadColors(snapshot.Threads);
 
             DrawWorkItems(e.Graphics, theadColors);
             DrawThreads(e.Graphics, theadColors);
         }
 
-        private Dictionary<int, Color> GetThreadColors(WorkProgress[] snapshot)
+        private Dictionary<int, Color> GetThreadColors(ThreadInfo[] threads)
         {
             var colors = new Dictionary<int, Color>();
 
-            var tids = snapshot.SelectMany(wp => wp.WorkThreadIds)
-                               .Distinct()
-                               .Where(tid => tid != 0);
-
-            foreach (var ti in tids)
+            foreach (var ti in threads)
             {
-                if (!colors.ContainsKey(ti))
+                if (!colors.ContainsKey(ti.ThreadId))
                 {
-                    colors[ti] = GetColor(ti);
+                    colors[ti.ThreadId] = GetColor(ti.ThreadId);
                 }
             }
 
@@ -79,14 +76,14 @@ namespace Visualizer.Controls
         private void DrawWorkItems(Graphics graphics, Dictionary<int, Color> threadColors)
         {
             var xMax = Width - threadSpacing;
-            var wuX = 0.25 * xMax / snapshot.Max(i => i.Total); // 4 largest items on the row
+            var wuX = 0.25 * xMax / snapshot.State.Max(i => i.Total); // 4 largest items on the row
             var xLeft = xMax;
             var x = 0f;
             var y = 0f;
 
             var itemHeight = Math.Min(16f, 1f * ClientSize.Height / GetRowCountItems());
 
-            foreach (var item in snapshot)
+            foreach (var item in snapshot.State)
             {
                 if (Math.Round(xLeft / wuX) < item.Total)
                 {
@@ -116,12 +113,12 @@ namespace Visualizer.Controls
         private int GetRowCountItems()
         {
             var xMax = Width - threadSpacing;
-            var wuX = 0.25 * xMax / snapshot.Max(i => i.Total); // 4 largest items on the row
+            var wuX = 0.25 * xMax / snapshot.State.Max(i => i.Total); // 4 largest items on the row
             var xLeft = xMax;
             var x = 0;
             var rowCount = 1;
 
-            foreach (var item in snapshot)
+            foreach (var item in snapshot.State)
             {
                 if (Math.Round(xLeft / wuX) < item.Total)
                 {
@@ -149,7 +146,7 @@ namespace Visualizer.Controls
 
             var activeThreads = new HashSet<int>();
 
-            foreach (var item in snapshot)
+            foreach (var item in snapshot.State)
             {
                 if (item.State == WorkState.InProgress && item.WorkThreadIds.Length > 0)
                 {

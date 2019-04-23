@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Visualizer.UI;
 using WorkplaceEngine.Contract;
@@ -159,18 +160,9 @@ namespace Visualizer
 
             workProgress.SetData(snapshot);
 
-            if (snapshot != null)
+            if (snapshot != null && executor != null && executor.State == WorkState.InProgress)
             {
-                var activeItems = snapshot.Where(p => p.State == WorkState.InProgress);
-
-                if (activeItems.Count() > 0)
-                {
-                    activeThreadChart.AddValue(
-                        activeItems.Select(p => p.WorkThreadIds.LastOrDefault())
-                                   .Where(t => t != 0)
-                                   .Distinct()
-                                   .Count());
-                }
+                activeThreadChart.AddValue(snapshot.Threads.Where(t => t.ActivelyUsed).Count());
             }
 
             timeLabel.Text = String.Format("{0:00}:{1:00}:{2:00}.{3:000}",

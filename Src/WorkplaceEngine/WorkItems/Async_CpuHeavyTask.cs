@@ -21,7 +21,7 @@ namespace WorkplaceEngine.WorkItems
 
                     double p = 0.0;
 
-                    for (int i = 0; i < 100000; i++)
+                    for (int i = 0; i < 1000000; i++)
                     {
                         p += Math.Pow(12.6, 3.2);
                     }

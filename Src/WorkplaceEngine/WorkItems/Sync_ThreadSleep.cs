@@ -16,7 +16,7 @@ namespace WorkplaceEngine.WorkItems
                 if (cancel.IsCancellationRequested)
                     break;
 
-                Thread.Sleep(10);
+                Thread.Sleep(100);
 
                 Progress(1);
             }

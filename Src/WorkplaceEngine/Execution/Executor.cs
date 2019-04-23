@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -119,7 +120,33 @@ namespace WorkplaceEngine.Execution
             }
         }
 
-        public WorkProgress[] GetSnapshot() => items.Select(i => i.CurrentProgress).ToArray();
+        public Snapshot GetSnapshot()
+        {
+            var snapshotItems = items.Select(i => i.CurrentProgress).ToArray();
+
+            var usedThreads = new Dictionary<int, bool>();
+            var currentThreadIs = Thread.CurrentThread.ManagedThreadId;
+
+            foreach (ProcessThread thread in Process.GetCurrentProcess().Threads)
+            {
+                if (thread.Id != currentThreadIs)
+                {
+                    usedThreads[thread.Id] = thread.ThreadState == System.Diagnostics.ThreadState.Running;
+                }
+            }
+
+            var snapshotThreads = new List<ThreadInfo>();
+
+            foreach (var usedTheadId in snapshotItems.Where(i => i.WorkThreadIds.Length > 0)
+                                                     .SelectMany(i => i.WorkThreadIds)
+                                                     .Distinct())
+            {
+                usedThreads.TryGetValue(usedTheadId, out bool used);
+                snapshotThreads.Add(new ThreadInfo(usedTheadId, used));
+            }
+
+            return new Snapshot(snapshotItems, snapshotThreads.ToArray());
+        }
 
         public void Dispose()
         {

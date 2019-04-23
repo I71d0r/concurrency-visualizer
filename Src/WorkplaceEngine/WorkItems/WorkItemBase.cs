@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 using WorkplaceEngine.Contract;
 
@@ -79,10 +80,13 @@ namespace WorkplaceEngine.WorkItems
         {
             if (addUsedThread)
             {
-                threadIds.Add(Thread.CurrentThread.ManagedThreadId);
+                threadIds.Add(GetCurrentWin32ThreadId());
             }
 
             CurrentProgress = new WorkProgress(workState, progress, TotalWorkUnitCount, threadIds.ToArray());
         }
+
+        [DllImport("Kernel32", EntryPoint = "GetCurrentThreadId", ExactSpelling = true)]
+        public static extern Int32 GetCurrentWin32ThreadId();
     }
 }
