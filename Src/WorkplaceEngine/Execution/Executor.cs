@@ -131,7 +131,9 @@ namespace WorkplaceEngine.Execution
             {
                 if (thread.Id != currentThreadIs)
                 {
-                    usedThreads[thread.Id] = thread.ThreadState == System.Diagnostics.ThreadState.Running;
+                    usedThreads[thread.Id] = 
+                        thread.ThreadState == System.Diagnostics.ThreadState.Running
+                        || (thread.ThreadState == System.Diagnostics.ThreadState.Wait && thread.WaitReason != ThreadWaitReason.UserRequest);
                 }
             }
 
