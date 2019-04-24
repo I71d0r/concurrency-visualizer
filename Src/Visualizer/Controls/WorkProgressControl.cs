@@ -144,20 +144,7 @@ namespace Visualizer.Controls
 
             graphics.DrawString("Thread", Font, Brushes.WhiteSmoke, x, 3);
 
-            var activeThreads = new HashSet<int>();
-
-            foreach (var item in snapshot.State)
-            {
-                if (item.State == WorkState.InProgress && item.WorkThreadIds.Length > 0)
-                {
-                    var lastThread = item.WorkThreadIds.Last();
-
-                    if (!activeThreads.Contains(lastThread))
-                    {
-                        activeThreads.Add(lastThread);
-                    }
-                }
-            }
+            var activeThreads = new HashSet<int>(snapshot.Threads.Where(t => t.ActivelyUsed).Select(t => t.ThreadId));
 
             using (var passivePen = new Pen(Color.Brown, 2f))
             {
