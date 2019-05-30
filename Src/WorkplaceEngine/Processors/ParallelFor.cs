@@ -11,9 +11,9 @@ namespace WorkplaceEngine.Processors
     [Description("Parallel For")]
     public class ParallelFor : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
-            Parallel.For(0, items.Length, i =>
+            Parallel.For(0, items.Length, new ParallelOptions() { TaskScheduler = scheduler }, i =>
             {
                 items[i].WorkHard(cancel);
             });

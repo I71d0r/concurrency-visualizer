@@ -1,4 +1,5 @@
-﻿using System.Threading;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WorkplaceEngine.Contract
 {
@@ -14,6 +15,6 @@ namespace WorkplaceEngine.Contract
         /// </summary>
         /// <param name="items">Items to process</param>
         /// <param name="cancel">Cooperative cancellation token</param>
-        void Process(TWorkItem[] items, CancellationToken cancel);
+        void Process(TWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler);
     }
 }

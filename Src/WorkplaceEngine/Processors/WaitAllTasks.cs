@@ -12,7 +12,7 @@ namespace WorkplaceEngine.Processors
     [Description("Manual Tasks")]
     public class WaitAllTasks : IWorkItemProcessor<IAsyncWorkItem>
     {
-        public void Process(IAsyncWorkItem[] items, CancellationToken cancel)
+        public void Process(IAsyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
             Task.WaitAll(items.Select(i => i.WorkHard(cancel)).ToArray());
         }

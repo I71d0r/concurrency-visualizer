@@ -12,9 +12,9 @@ namespace WorkplaceEngine.Processors
     [Description("Manual Tasks")]
     public class WaitAllTaskRun : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
-            Task.WaitAll(items.Select(i => Task.Run(() => i.WorkHard(cancel))).ToArray());
+            Task.WaitAll(items.Select(i => Task.Factory.StartNew(() => i.WorkHard(cancel), default, TaskCreationOptions.None, scheduler)).ToArray());
         }
     }
 }

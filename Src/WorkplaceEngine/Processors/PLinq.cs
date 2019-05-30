@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WorkplaceEngine.Contract;
 
 namespace WorkplaceEngine.Processors
@@ -11,7 +12,7 @@ namespace WorkplaceEngine.Processors
     [Description("PLinq")]
     public class PLinq : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
             items.AsParallel().ForAll(i => i.WorkHard(cancel));
         }
