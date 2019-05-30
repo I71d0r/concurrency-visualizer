@@ -24,6 +24,7 @@ namespace WorkplaceEngine.Processors
             }
 
             //Note: Would have to use Interlocked.Read if finishedCount would be long
+			// What about volatile? ;)
             while (finishedCount != items.Length)
             {
                 Thread.Sleep(100);
