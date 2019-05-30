@@ -67,9 +67,10 @@ namespace WorkplaceEngine.Execution
                 State = WorkState.InProgress;
             }
 
+			var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
             await Task.Run(() =>
             {
-                itemsProcessor.Process(items, cancellation.Token);
+                itemsProcessor.Process(items, cancellation.Token, scheduler);
             }).ConfigureAwait(false);
 
             State = WorkState.Finished;

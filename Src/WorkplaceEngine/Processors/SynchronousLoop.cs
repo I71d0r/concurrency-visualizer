@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using WorkplaceEngine.Contract;
 
 namespace WorkplaceEngine.Processors
@@ -10,7 +11,7 @@ namespace WorkplaceEngine.Processors
     [Description("Synchronous Loop")]
     public class SynchronousLoop : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
             for (int i = 0; i < items.Length; i++)
             {

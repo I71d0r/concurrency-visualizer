@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using WorkplaceEngine.Contract;
 
 namespace WorkplaceEngine.Processors
@@ -10,7 +11,7 @@ namespace WorkplaceEngine.Processors
     [Description("ThredPool QueueUserWorkItem")]
     public class ThredPoolEnque : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
             int finishedCount = 0;
 

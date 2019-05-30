@@ -15,7 +15,7 @@ namespace WorkplaceEngine.Processors
     [Description("Single thread per work item")]
     public class Threads : IWorkItemProcessor<ISyncWorkItem>
     {
-        public void Process(ISyncWorkItem[] items, CancellationToken cancel)
+        public void Process(ISyncWorkItem[] items, CancellationToken cancel, TaskScheduler scheduler)
         {
             var threads = new Thread[items.Length];
 
